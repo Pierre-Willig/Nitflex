@@ -13,3 +13,8 @@ nav img {
 .navbar-toggler {
     border: 1px solid red !important;
 }
+
+#sectionFilms a, #sectionSeries a, #sectionDocumentaires a, #sectionAnime a, #detailsChoix a {
+    text-decoration: none;
+    color: inherit;
+}
