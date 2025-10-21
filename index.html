@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nitflex</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fons.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-dark">
+    
+    <header>
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-gradient">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a href="#" class="navbar-brand"><img src="./images/logo.png" alt="logo"></a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active text-white" aria-current="page">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link text-white">Films</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link text-white">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link text-white">About</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search"/>
+                        <button class="btn btn-outline-success" type="submit">Rechercher</button>
+                    </form>
+                    <button type="button" class="btn btn-danger fw-semibold">Se déconnecter</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="container text-light">
+
+        <section class="d-flex flex-column justify-content-center">
+            <div class="row">
+                <article class="text-center col-12">
+                    <h1>Bienvenue sur Nitflex</h1>
+                    <h4>Découvrez nos films, séries, documentaires et mangas préférés.</h3>
+                </article>
+            </div>
+            <div class="row ">
+                <article class="col-12 col-lg-4 p-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title text-center">Offre basique</h4>
+                            <h5 class="card-subtitle mb-2 text-body-secondary text-center">10€/mois</h5>
+                            <p class="card-text ps-3"><i class="bi bi-check"></i> Accès très limité<br>
+                            <i class="bi bi-check"></i> Pubs toutes les 6 minutes <br>
+                            <i class="bi bi-check"></i> Support sur rendez-vous uniquement</p>
+                            <div class="justify-content-around d-flex">
+                                <a href="#" class="card-link btn btn-success">S'abonner</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="col-12 col-lg-4 p-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title text-center">Offre Standard</h4>
+                            <h5 class="card-subtitle mb-2 text-body-secondary text-center">30€/mois</h5>
+                            <p class="card-text ps-3"><i class="bi bi-check"></i> Accès peu limité<br>
+                            <i class="bi bi-check"></i> Pubs toutes les 15 minutes <br>
+                            <i class="bi bi-check"></i> Support par courrier recommandé ou email</p>
+                            <div class="justify-content-around d-flex">
+                                <a href="#" class="card-link btn btn-success">S'abonner</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="col-12 col-lg-4 p-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title text-center">Offre Premium</h4>
+                            <h5 class="card-subtitle mb-2 text-body-secondary text-center">50€/mois</h5>
+                            <p class="card-text ps-3"><i class="bi bi-check"></i> Accès illimité<br>
+                            <i class="bi bi-check"></i> Une seule pub par épisode !!<br>
+                            <i class="bi bi-check"></i> Support moral et émotionnel 24h/7j</p>
+                            <div class="justify-content-around d-flex">
+                                <a href="#" class="card-link btn btn-success">S'abonner</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+
+        </section>
+        
+        
+        <section id="sectionFilms">
+            <h2>Films populaires</h2>
+        </section>
+        
+        
+        <section id="sectionSeries">
+            <h2>Séries populaires</h2>
+        </section>
+        
+        
+        <section id="sectionDocumentaires">
+            <h2>Documentaires</h2>
+        </section>
+        
+        
+        <section id="sectionAnime">
+            <h2>Mangas & Anime</h2>
+        </section>
+        
+    </div>
+        <script src=""></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    </body>
+    </html>
