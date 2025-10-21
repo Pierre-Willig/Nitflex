@@ -18,3 +18,12 @@ nav img {
     text-decoration: none;
     color: inherit;
 }
+
+section p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4 !important;
+    line-clamp: 4 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
