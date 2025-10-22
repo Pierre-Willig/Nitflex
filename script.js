@@ -133,25 +133,30 @@ function afficherXML(xmlDoc){
     console.log("... Terminé.");
 }
 
-
 /**
  * Fonction générique pour créer une carte d'affichage à partir d'un élément XML
  * @param {element} item - élément XML (film, série, etc)
  * @returns {HTMLElement} - élément div représentant la carte
  */
 function createXMLCard(item){
+
+    // Extraire du XML
+    let nom = item.getElementsByTagName("nom")[0].textContent;
+    let genre = item.getElementsByTagName("genre")[0].textContent;
+    let realisateur = item.getElementsByTagName("realisateur")[0].textContent;
+    let dateSortie = item.getElementsByTagName("dateSortie")[0].textContent;
+    let synopsis = item.getElementsByTagName("resumer")[0].textContent.trim();
     
+    // Définition des éléments d'une carte
     let card = document.createElement('div');
-    card.className = "card col-lg-3 col-6 bg-dark text-white border border-2 border-black";
-    
-    let link = document.createElement('a');
-    link.href = "./pagedetails.html";
+    card.className = "card col-lg-3 col-8 bg-dark text-white border border-2 shadow transform scale-10-hover";
+    card.id = `${genre}${nom}`;
     
     let cardTitle = document.createElement('h3');
     cardTitle.className = "card-title text-center";
     
     let img = document.createElement('img');
-    img.alt = "test";
+    img.alt = nom;
     img.className = "card-img-top";
     
     let cardBody = document.createElement('div');
@@ -162,14 +167,8 @@ function createXMLCard(item){
 
     let cardFooter = document.createElement('div');
     cardFooter.className = "card-footer text-secondary";
-
-    // Extraire du XML
-    let nom = item.getElementsByTagName("nom")[0].textContent;
-    let genre = item.getElementsByTagName("genre")[0].textContent;
-    let realisateur = item.getElementsByTagName("realisateur")[0].textContent;
-    let dateSortie = item.getElementsByTagName("dateSortie")[0].textContent;
-    let synopsis = item.getElementsByTagName("resumer")[0].textContent.trim();
     
+    // Attribution des contenus à leurs éléments correspondants
     let url = item.getElementsByTagName('url')[0].textContent;
     img.src = url;
     img.alt = nom;
@@ -180,14 +179,24 @@ function createXMLCard(item){
     
     cardFooter.innerHTML = `<strong>Genre:</strong> ${genre},<br><strong>Réalisateur:</strong> ${realisateur}<br><strong>Date de sortie:</strong> ${dateSortie}`;
     
+    // Imbrication des éléments ensemble
     cardBody.appendChild(cardP);
     
-    link.appendChild(cardTitle);
-    link.appendChild(img);
-    link.appendChild(cardBody);
-    link.appendChild(cardFooter);
+    card.appendChild(cardTitle);
+    card.appendChild(img);
+    card.appendChild(cardBody);
+    card.appendChild(cardFooter);
     
-    card.appendChild(link);
-    
+    console.log(item)
+    let itemId = item.getAttribute("xml:id");
+    let itemType = item.tagName.toLowerCase();
+    console.log(itemId, itemType);
+
+    if (itemId && itemType) {
+        card.onclick = function() {
+            window.location.href = `./pagedetails.html?id=${itemId}&type=${itemType}`;
+        }
+    }
+
     return card;
 }
