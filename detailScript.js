@@ -1,34 +1,31 @@
-// XMLHttpRequest Nitflex
+// JSONHttpRequest Nitflex
 
-function loadNitFlexXML(){
-    // Nouvel object XMLHttpRequest
+function loadNitFlexJSON(){
+    // Nouvel object JSONHttpRequest
     let xhr = new XMLHttpRequest();
 
     // configuration d'une requête
     // utilisation de la méthode GET pour récupérer les données
     // Nom du fichier à charger
     // - true = requête asynchrone
-    xhr.open('GET', './netflop.xml', true);
+    xhr.open('GET', './netflop.json', true);
 
     // Définir le gestionnaire d'évènements pour le chargement
     xhr.onload = function () {
         // Vérifie si la requête réussit
         // Statut 200 = OK (succès)
         if (xhr.status === 200) {
-            // Parse la réponse du serveur
-            // Créé une instance DOMParser
-            let parser = new DOMParser();
 
-            // Parse le XML reçu et le converti en document XML
-            // xhr.responseText → le contenu du fichier XML en texte
-            // 'text/xml' = type MIME pour indiquer que c'est du XML
-            let xmlDoc = parser.parseFromString(xhr.responseText, 'text/xml');
+            // Parse le JSON reçu et le converti en document JSON
+            // xhr.responseText → le contenu du fichier JSON en texte
+            // 'text/JSON' = type MIME pour indiquer que c'est du JSON
+            let JSONDoc = JSON.parse(xhr.responseText);
 
-            afficherXML(xmlDoc);
-            // console.log(xmlDoc);
+            afficherJSON(JSONDoc);
+            // console.log(JSONDoc);
 
         } else {
-            console.error("Erreur lors du chargement du fichier XML.");
+            console.error("Erreur lors du chargement du fichier JSON.");
             console.error("Status:", xhr.status);
             console.error("Message:", xhr.statusText);
         }
@@ -36,7 +33,7 @@ function loadNitFlexXML(){
 
     // Gestion des erreurs réseau
     xhr.onerror = function () {
-        console.error("Erreur réseau lors du chargement du fichier xml.");
+        console.error("Erreur réseau lors du chargement du fichier JSON.");
         alert("Impossible de charger les données. Vérifiez votre connexion internet.");
     };
 
@@ -46,15 +43,15 @@ function loadNitFlexXML(){
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log("Le DOM est chargé, lancement de nitflex avec DOMParser...");
-    loadNitFlexXML();
+    loadNitFlexJSON();
 });
 
 /**
- * Fonction pour afficher les films depuis le document XML
- * @param {Document} xmlDoc Document XML parsé par DOMParser
+ * Fonction pour afficher les films depuis le document JSON
+ * @param {Document} JSONDoc Document JSON parsé par DOMParser
  */
 
-function afficherXML(xmlDoc){
+function afficherJSON(JSONDoc){
 
     console.log("Initialisation des éléments du DOM...");
 
@@ -65,33 +62,33 @@ function afficherXML(xmlDoc){
     // {id: 1, type: "documentaire"}
     // Ca sera un objet.
 
-    // Recherche, dans le XML, une entrée qui possède un ID et un type qui correspondent à ce que l'on veut afficher en détail.
-    let searchResult = searchItemByType(xmlDoc, params.id, params.type);
-        // Exemple:    searchItemByType(xmlDoc, 1, "documentaire");
+    // Recherche, dans le JSON, une entrée qui possède un ID et un type qui correspondent à ce que l'on veut afficher en détail.
+    let searchResult = searchItemByType(JSONDoc, params.id, params.type);
+        // Exemple:    searchItemByType(JSONDoc, 1, "documentaire");
         // (valeurs des variables remplacées pour clarification.)
 
     let infoContainer = document.getElementById("infoContainer");
 
     // Comme pour la génération de carte de la page précédente, on génère une carte en utilisant le résultat de la recherche ci-dessus
-    infoContainer.appendChild(createXMLCard(searchResult)); 
+    infoContainer.appendChild(createJSONCard(searchResult)); 
 }
 
 /**
- * Fonction générique pour créer une carte d'affichage à partir d'un élément XML
- * @param {element} item - élément XML (film, série, etc)
+ * Fonction générique pour créer une carte d'affichage à partir d'un élément JSON
+ * @param {element} item - élément JSON (film, série, etc)
  * @returns {HTMLElement} - élément div représentant la carte
  */
-function createXMLCard(item){ // Même fonction que dans script.js, génère une carte. Structure légèrement différente car carte unique et grande.
+function createJSONCard(item){ // Même fonction que dans script.js, génère une carte. Structure légèrement différente car carte unique et grande.
     
     //Definition de la section ciblée
     let card = document.getElementById("detailsChoix");
 
-    let nom = item.getElementsByTagName("nom")[0].textContent;
-    let genre = item.getElementsByTagName("genre")[0].textContent;
-    let realisateur = item.getElementsByTagName("realisateur")[0].textContent;
-    let dateSortie = item.getElementsByTagName("dateSortie")[0].textContent;
-    let synopsis = item.getElementsByTagName("resumer")[0].textContent.trim();
-    let url = item.getElementsByTagName('url')[0].textContent;
+    let nom = item.nom;
+    let genre = item.genre;
+    let realisateur = item.realisateur;
+    let dateSortie = item.dateSortie;
+    let synopsis = item.resumer;
+    let url = item.url;
 
     // Titre
     let titre = document.createElement("h1");
@@ -135,7 +132,7 @@ function createXMLCard(item){ // Même fonction que dans script.js, génère une
 
 /**
  * Fonction qui récupère les paramètres se trouvant après le "?" dans l'URL
- * Dans ce cas, il s'agit de l'id du film ou de la série, tel qu'il apapraît dans le XML
+ * Dans ce cas, il s'agit de l'id du film ou de la série, tel qu'il apapraît dans le JSON
  * ainsi que son type (film, série, manga, etc)
  */
 function getUrlParams() {
@@ -148,27 +145,28 @@ function getUrlParams() {
 }
 
 /**
- * Fonction qui parcours le XML.
- * Elle récupère l'ensemble des éléments dans le XML qui ont le même type que celui demandé. (Par exemple: films)
+ * Fonction qui parcours le JSON.
+ * Elle récupère l'ensemble des éléments dans le JSON qui ont le même type que celui demandé. (Par exemple: films)
  * Ensuite, elle recherche l'élément parmi ceux-ci qui a l'id qu'on lui demande. (Par exemple, 3)
  * Le film avec l'id 3, par exemple, sera Insidious.
  */
-function searchItemByType(xmlDoc, itemId, itemType) {
+function searchItemByType(JSONDoc, itemId, itemType) {
 
-    // Créé un tableau content uniquement les entrées du XML du type qu'on recherche.
-    let items = xmlDoc.getElementsByTagName(itemType);
+    // Créé un tableau content uniquement les entrées du JSON du type qu'on recherche.
+    let superType = `${itemType}s`;
+    let items = JSONDoc.netflop[superType][itemType];
 
     // Parcours le tableau
     for (let i = 0 ; i < items.length ; i++) {
         // Est-ce que l'attribut ID existe, et est-ce qu'il correspond à notre recherche ?
-        if (items[i].hasAttribute("xml:id") && items[i].getAttribute("xml:id") === itemId) {
+        if (items[i].id !== null && items[i].id !== undefined && items[i].id === itemId) {
             // S'il correspond, on a trouvé notre film. On envoie comme résultat de cette fonction
-            // l'entrée du film ou de la série dans le XML.
+            // l'entrée du film ou de la série dans le JSON.
             return items[i];
         }
     }
 
-    // Si on arrive ici, c'est qu'aucun résultat n'a été trouvé. Soit l'id ne correspondait à aucune de nos entrées dans le XML,
+    // Si on arrive ici, c'est qu'aucun résultat n'a été trouvé. Soit l'id ne correspondait à aucune de nos entrées dans le JSON,
     // soit il était non définit. 
     console.error("Erreur: paramètres incorrects. Id undefined, null, ou non trouvé.");
     alert("ERREUR CRITIQUE, EXPLOSION.");

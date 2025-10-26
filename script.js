@@ -1,6 +1,6 @@
 // XMLHttpRequest Nitflex
 
-function loadNitFlexXML(){
+function loadNitFlexJSON(){
     // Nouvel object XMLHttpRequest
     let xhr = new XMLHttpRequest();
 
@@ -8,27 +8,19 @@ function loadNitFlexXML(){
     // utilisation de la méthode GET pour récupérer les données
     // Nom du fichier à charger
     // - true = requête asynchrone
-    xhr.open('GET', './netflop.xml', true);
+    xhr.open('GET', './netflop.json', true);
 
     // Définir le gestionnaire d'évènements pour le chargement
     xhr.onload = function () {
         // Vérifie si la requête réussit
         // Statut 200 = OK (succès)
-        if (xhr.status === 200) {
-            // Parse la réponse du serveur
-            // Créé une instance DOMParser
-            let parser = new DOMParser();
-
-            // Parse le XML reçu et le converti en document XML
-            // xhr.responseText → le contenu du fichier XML en texte
-            // 'text/xml' = type MIME pour indiquer que c'est du XML
-            let xmlDoc = parser.parseFromString(xhr.responseText, 'text/xml');
-
-            afficherXML(xmlDoc);
-            // console.log(xmlDoc);
+        if (xhr.status === 200){ 
+            let JSONDoc = JSON.parse(xhr.responseText);
+            afficherJSON(JSONDoc);
+            // console.log(JSONDoc);
 
         } else {
-            console.error("Erreur lors du chargement du fichier XML.");
+            console.error("Erreur lors du chargement du fichier JSON.");
             console.error("Status:", xhr.status);
             console.error("Message:", xhr.statusText);
         }
@@ -36,7 +28,7 @@ function loadNitFlexXML(){
 
     // Gestion des erreurs réseau
     xhr.onerror = function () {
-        console.error("Erreur réseau lors du chargement du fichier xml.");
+        console.error("Erreur réseau lors du chargement du fichier JSON.");
         alert("Impossible de charger les données. Vérifiez votre connexion internet.");
     };
 
@@ -46,15 +38,15 @@ function loadNitFlexXML(){
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log("Le DOM est chargé, lancement de nitflex avec DOMParser...");
-    loadNitFlexXML();
+    loadNitFlexJSON();
 });
 
 /**
- * Fonction pour afficher les films depuis le document XML
- * @param {Document} xmlDoc Document XLM parsé par DOMParser
+ * Fonction pour afficher les films depuis le document JSON
+ * @param {Document} JSONDoc Document XLM parsé par DOMParser
  */
 
-function afficherXML(xmlDoc){
+function afficherJSON(JSONDoc){
 
     console.log("Initialisation des éléments du DOM...")
     //Definition des sections ciblées
@@ -97,60 +89,60 @@ function afficherXML(xmlDoc){
         animeList.className = "row flex-row flex-nowrap gap-1 overflow-scroll";
         sectionAnime.appendChild(animeList);
 
-    // Récupère tous les éléments <film>, <series>, <documentaire>, <manga>, <anime> du XML
+    // Récupère tous les éléments <film>, <series>, <documentaire>, <manga>, <anime> du JSON
     // getElementsByTagName() retourne une collection de tous les elements avec ce nom de balise
-        let films = xmlDoc.getElementsByTagName("film");
-        let series = xmlDoc.getElementsByTagName("serie");
-        let documentaire = xmlDoc.getElementsByTagName("documentaire");
-        let manga = xmlDoc.getElementsByTagName("manga");
-        let anime = xmlDoc.getElementsByTagName("anime");
+        let films = JSONDoc.netflop.films.film;
+        let series = JSONDoc.netflop.series.serie;
+        let documentaire = JSONDoc.netflop.documentaires.documentaire;
+        let manga = JSONDoc.netflop.mangas.manga;
+        let anime = JSONDoc.netflop.animes.anime;
 
     // Boucles créant et plaçant les éléments dans leurs emplacements respectifs.
         // Boucle pour les films
         for (let i = 0; i < films.length ; i++) {
-            movieList.appendChild(createXMLCard(films[i])); // Pour chaque film dans la liste, créé une carte et la rajoute au HTML
+            movieList.appendChild(createJSONCard(films[i], "film")); // Pour chaque film dans la liste, créé une carte et la rajoute au HTML
         }
         console.log("Chargement en cours, 20%.");
 
         // Boucle pour les séries
         for (let i = 0; i < series.length ; i++) {
-            seriesList.appendChild(createXMLCard(series[i])); // Pour les séries
+            seriesList.appendChild(createJSONCard(series[i], "serie")); // Pour les séries
         }
         console.log("Chargement en cours, 40%.");
 
         // Boucle pour les documentaires
         for (let i = 0; i < documentaire.length ; i++) {
-            docsList.appendChild(createXMLCard(documentaire[i])); // Et ainsi de suite.
+            docsList.appendChild(createJSONCard(documentaire[i], "documentaire")); // Et ainsi de suite.
         }
         console.log("Chargement en cours, 60%.");
 
         // Boucle pour les mangas
         for (let i = 0; i < manga.length ; i++) {
-            animeList.appendChild(createXMLCard(manga[i])); // Chaque boucle pourrait être dans une fonction différente
+            animeList.appendChild(createJSONCard(manga[i]), "manga"); // Chaque boucle pourrait être dans une fonction différente
         }
         console.log("Chargement en cours, 80%.");
         
         // Boucle pour les animés
         for (let i = 0; i < anime.length ; i++) {
-            animeList.appendChild(createXMLCard(anime[i])); // Mais pour gagner du temps et de la place, j'ai tout mis au même endroit
+            animeList.appendChild(createJSONCard(anime[i], "anime")); // Mais pour gagner du temps et de la place, j'ai tout mis au même endroit
         }
         console.log("Chargement en cours, 100%.");
         console.log("... Terminé.");
 }
 
 /**
- * Fonction générique pour créer une carte d'affichage à partir d'un élément XML
- * @param {element} item - élément XML (film, série, etc)
+ * Fonction générique pour créer une carte d'affichage à partir d'un élément JSON
+ * @param {element} item - élément JSON (film, série, etc)
  * @returns {HTMLElement} - élément div représentant la carte
  */
-function createXMLCard(item){
+function createJSONCard(item, type){
 
-    // Extraire les informations du média depuis le XML
-    let nom = item.getElementsByTagName("nom")[0].textContent;
-    let genre = item.getElementsByTagName("genre")[0].textContent;
-    let realisateur = item.getElementsByTagName("realisateur")[0].textContent;
-    let dateSortie = item.getElementsByTagName("dateSortie")[0].textContent;
-    let synopsis = item.getElementsByTagName("resumer")[0].textContent.trim();
+    // Extraire les informations du média depuis le JSON
+    let nom = item.nom;
+    let genre = item.genre;
+    let realisateur = item.realisateur;
+    let dateSortie = item.dateSortie;
+    let synopsis = item.resumer;
     
     // Définition des éléments d'une carte
     let card = document.createElement('div');
@@ -179,7 +171,7 @@ function createXMLCard(item){
     cardFooter.className = "card-footer text-secondary";
     
     // Attribution des contenus à leurs éléments correspondants
-    let url = item.getElementsByTagName('url')[0].textContent; // Récupère le chemin de l'image
+    let url = item.url; // Récupère le chemin de l'image
     img.src = url; // l'attribue à l'attribut src pour que le site aille chercher l'image requise
     img.alt = nom;
 
@@ -200,8 +192,8 @@ function createXMLCard(item){
     card.appendChild(cardBody);  // Corps avec synopsis
     card.appendChild(cardFooter);// Footer avec détails
     
-    let itemId = item.getAttribute("xml:id"); // Récupère l'id correspondant à cette entrée dans le XLM ; par exemple 1
-    let itemType = item.tagName.toLowerCase();// Ainsi que son type ; par exemple Film
+    let itemId = item.id; // Récupère l'id correspondant à cette entrée dans le XLM ; par exemple 1
+    let itemType = type;// Ainsi que son type ; par exemple Film
     console.log(itemId, itemType); // "1, Film"
 
     if (itemId && itemType) { // Si les deux éléments existent
