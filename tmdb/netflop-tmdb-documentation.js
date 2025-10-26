@@ -5,14 +5,14 @@
 
 // Configuration de l'API TMDB
 // Clé API personnelle pour accéder aux données de The Movie Database
-const API_KEY = '...';
+const API_KEY = '672b6d35e95215eb1edeb2754d1d9cd4';
 
 // URL de base pour toutes les requêtes API (version 3 de l'API TMDB)
-const BASE_URL = '...';
+const BASE_URL = 'https://api.themoviedb.org/3/';
 
 // URL de base pour charger les images (affiches de films)
 // w500 = largeur de 500 pixels pour les images
-const IMAGE_BASE_URL = '...';
+const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500/';
 
 /**
  * Fonction principale pour charger toutes les données depuis TMDB
